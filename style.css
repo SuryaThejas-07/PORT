@@ -1139,10 +1139,17 @@ body {
 
 .games-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 30px;
   width: 100%;
   max-width: 990px;
+}
+
+@media (max-width: 990px) {
+  .games-grid {
+    grid-template-columns: 1fr;
+    justify-items: start; /* Align single game item to the left */
+  }
 }
 
 .game-console {
@@ -1447,25 +1454,42 @@ body {
   }
 }
 
-@media (max-width: 480px) {
-  .hero-name {
-    font-size: 2.4rem;
-  }
-
+/* Responsive header layout for tablets and mobiles */
+@media (max-width: 860px) {
   .nav-container {
-    flex-direction: column;
-    gap: 16px;
-    align-items: flex-start;
+    display: grid;
+    grid-template-areas: 
+      "logo theme"
+      "nav nav";
+    grid-template-columns: 1fr auto;
+    gap: 16px 24px;
+    align-items: center;
+    padding: 16px 24px;
   }
 
-  .nav-links {
-    width: 100%;
-    justify-content: space-between;
-    gap: 10px;
+  .nav-logo {
+    grid-area: logo;
+    white-space: nowrap;
   }
 
   .theme-toggle-container {
-    align-self: flex-end;
+    grid-area: theme;
+    justify-self: end;
+  }
+
+  .nav-links {
+    grid-area: nav;
+    width: 100%;
+    justify-content: space-between;
+    gap: 12px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-name {
+    font-size: 2.4rem;
   }
 
   .footer-container {
