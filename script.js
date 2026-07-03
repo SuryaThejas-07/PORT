@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initRoleCycle();
     initContactForm();
     initSnakeGame();
+    initTicTacToeGame();
 });
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -656,4 +657,294 @@ function initSnakeGame() {
         draw();
     });
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+}
+
+/**
+ * Tic-Tac-Toe Game
+ * Premium neon retro board with smart AI (Vs CPU) and Local 2P modes.
+ */
+function initTicTacToeGame() {
+    const canvas = document.getElementById('ttt-canvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    const scoreXVal = document.getElementById('ttt-score-x');
+    const scoreOVal = document.getElementById('ttt-score-o');
+    const scoreTiesVal = document.getElementById('ttt-score-ties');
+    const overlay = document.getElementById('ttt-overlay');
+    const overlayTitle = document.getElementById('ttt-overlay-title');
+    const overlaySubtitle = document.getElementById('ttt-overlay-subtitle');
+    const playBtn = document.getElementById('ttt-play-btn');
+    const resetBtn = document.getElementById('ttt-reset-btn');
+    const modeSelect = document.getElementById('ttt-mode');
+
+    let board = ['', '', '', '', '', '', '', '', ''];
+    let currentPlayer = 'X';
+    let gameState = 'idle'; // 'idle', 'playing', 'gameover'
+    let scores = { X: 0, O: 0, ties: 0 };
+
+    // Get Active Palette Colors dynamically
+    function getThemeColors() {
+        const style = getComputedStyle(document.documentElement);
+        return {
+            accent: style.getPropertyValue('--accent').trim() || '#5B8DEF',
+            text: style.getPropertyValue('--text').trim() || '#EDEAE3',
+            textMuted: style.getPropertyValue('--text-muted').trim() || '#9A968C',
+            border: style.getPropertyValue('--border').trim() || '#2A2A28',
+            surface: style.getPropertyValue('--surface').trim() || '#181818',
+            bg: style.getPropertyValue('--bg').trim() || '#121212'
+        };
+    }
+
+    // Draw the board
+    function drawBoard() {
+        const colors = getThemeColors();
+        
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // Background
+        ctx.fillStyle = '#0b0b0b';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw grid lines
+        ctx.strokeStyle = colors.border;
+        ctx.lineWidth = 6;
+        ctx.lineCap = 'round';
+
+        const size = canvas.width;
+        const cellSize = size / 3;
+
+        // Vertical lines
+        ctx.beginPath();
+        ctx.moveTo(cellSize, 20);
+        ctx.lineTo(cellSize, size - 20);
+        ctx.moveTo(cellSize * 2, 20);
+        ctx.lineTo(cellSize * 2, size - 20);
+        
+        // Horizontal lines
+        ctx.moveTo(20, cellSize);
+        ctx.lineTo(size - 20, cellSize);
+        ctx.moveTo(20, cellSize * 2);
+        ctx.lineTo(size - 20, cellSize * 2);
+        ctx.stroke();
+
+        // Draw moves
+        for (let i = 0; i < 9; i++) {
+            const row = Math.floor(i / 3);
+            const col = i % 3;
+            const x = col * cellSize + cellSize / 2;
+            const y = row * cellSize + cellSize / 2;
+
+            if (board[i] === 'X') {
+                drawX(x, y, cellSize / 3.5, colors.accent);
+            } else if (board[i] === 'O') {
+                drawO(x, y, cellSize / 3.5, colors.text);
+            }
+        }
+    }
+
+    function drawX(x, y, size, color) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 8;
+        ctx.lineCap = 'round';
+        
+        // Neon glow
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = color;
+
+        ctx.beginPath();
+        ctx.moveTo(x - size, y - size);
+        ctx.lineTo(x + size, y + size);
+        ctx.moveTo(x + size, y - size);
+        ctx.lineTo(x - size, y + size);
+        ctx.stroke();
+
+        ctx.shadowBlur = 0;
+    }
+
+    function drawO(x, y, size, color) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 8;
+        ctx.lineCap = 'round';
+
+        // Neon glow
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = color;
+
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.shadowBlur = 0;
+    }
+
+    function startGame() {
+        board = ['', '', '', '', '', '', '', '', ''];
+        currentPlayer = 'X';
+        gameState = 'playing';
+        overlay.classList.add('hidden');
+        drawBoard();
+    }
+
+    // Reset board and go back to overlay
+    function resetGame() {
+        board = ['', '', '', '', '', '', '', '', ''];
+        currentPlayer = 'X';
+        gameState = 'idle';
+        overlayTitle.textContent = 'NEON XO';
+        overlaySubtitle.textContent = 'Select mode and click Play';
+        playBtn.textContent = 'PLAY';
+        overlay.classList.remove('hidden');
+        drawBoard();
+    }
+
+    function checkWinner(b) {
+        const winPatterns = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+            [0, 4, 8], [2, 4, 6]             // Diagonals
+        ];
+
+        for (let pattern of winPatterns) {
+            if (b[pattern[0]] && b[pattern[0]] === b[pattern[1]] && b[pattern[0]] === b[pattern[2]]) {
+                return b[pattern[0]];
+            }
+        }
+
+        if (b.every(cell => cell !== '')) {
+            return 'tie';
+        }
+
+        return null;
+    }
+
+    function handleMove(index) {
+        if (board[index] !== '' || gameState !== 'playing') return;
+
+        board[index] = currentPlayer;
+        drawBoard();
+
+        const winner = checkWinner(board);
+        if (winner) {
+            endGame(winner);
+            return;
+        }
+
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+
+        if (modeSelect.value === 'ai' && currentPlayer === 'O') {
+            setTimeout(makeAiMove, 400); // realistic CPU delay
+        }
+    }
+
+    function makeAiMove() {
+        if (gameState !== 'playing') return;
+
+        // 1. Win if possible
+        for (let i = 0; i < 9; i++) {
+            if (board[i] === '') {
+                let tempBoard = [...board];
+                tempBoard[i] = 'O';
+                if (checkWinner(tempBoard) === 'O') {
+                    handleMove(i);
+                    return;
+                }
+            }
+        }
+
+        // 2. Block if opponent can win
+        for (let i = 0; i < 9; i++) {
+            if (board[i] === '') {
+                let tempBoard = [...board];
+                tempBoard[i] = 'X';
+                if (checkWinner(tempBoard) === 'X') {
+                    handleMove(i);
+                    return;
+                }
+            }
+        }
+
+        // 3. Take center
+        if (board[4] === '') {
+            handleMove(4);
+            return;
+        }
+
+        // 4. Take corners
+        const corners = [0, 2, 6, 8];
+        const freeCorners = corners.filter(i => board[i] === '');
+        if (freeCorners.length > 0) {
+            const randomCorner = freeCorners[Math.floor(Math.random() * freeCorners.length)];
+            handleMove(randomCorner);
+            return;
+        }
+
+        // 5. Take random remaining
+        const freeCells = [];
+        for (let i = 0; i < 9; i++) {
+            if (board[i] === '') freeCells.push(i);
+        }
+        if (freeCells.length > 0) {
+            const randomCell = freeCells[Math.floor(Math.random() * freeCells.length)];
+            handleMove(randomCell);
+        }
+    }
+
+    function endGame(winner) {
+        gameState = 'gameover';
+        
+        if (winner === 'X') {
+            scores.X++;
+            scoreXVal.textContent = String(scores.X).padStart(3, '0');
+            overlayTitle.textContent = 'PLAYER X WINS!';
+            overlaySubtitle.textContent = 'Awesome job!';
+        } else if (winner === 'O') {
+            scores.O++;
+            scoreOVal.textContent = String(scores.O).padStart(3, '0');
+            overlayTitle.textContent = modeSelect.value === 'ai' ? 'CPU WINS!' : 'PLAYER O WINS!';
+            overlaySubtitle.textContent = 'Better luck next time!';
+        } else {
+            scores.ties++;
+            scoreTiesVal.textContent = String(scores.ties).padStart(3, '0');
+            overlayTitle.textContent = "IT'S A TIE!";
+            overlaySubtitle.textContent = 'Well played!';
+        }
+
+        playBtn.textContent = 'PLAY AGAIN';
+        overlay.classList.remove('hidden');
+    }
+
+    canvas.addEventListener('click', (e) => {
+        if (gameState !== 'playing') return;
+        if (modeSelect.value === 'ai' && currentPlayer === 'O') return;
+
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.clientX - rect.left;
+        const clientY = e.clientY - rect.top;
+        const x = (clientX / rect.width) * canvas.width;
+        const y = (clientY / rect.height) * canvas.height;
+
+        const cellSize = canvas.width / 3;
+        const col = Math.floor(x / cellSize);
+        const row = Math.floor(y / cellSize);
+        const index = row * 3 + col;
+
+        if (index >= 0 && index < 9) {
+            handleMove(index);
+        }
+    });
+
+    playBtn.addEventListener('click', startGame);
+    resetBtn.addEventListener('click', resetGame);
+    modeSelect.addEventListener('change', resetGame);
+
+    // Initial paint
+    drawBoard();
+
+    // Redraw if theme changes
+    const themeObserver = new MutationObserver(() => {
+        drawBoard();
+    });
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 }

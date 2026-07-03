@@ -24,11 +24,11 @@
         <div class="nav-container">
             <a href="#intro" class="nav-logo">C. Surya Thejas</a>
             <nav class="nav-links" aria-label="Main Navigation">
-                <a href="#projects">projects</a>
-                <a href="#experience">experience</a>
-                <a href="#skills">skills</a>
-                <a href="#education">education</a>
-                <a href="#contact">contact</a>
+                <a href="#projects">Projects</a>
+                <a href="#experience">Experience</a>
+                <a href="#skills">Skills</a>
+                <a href="#education">Education</a>
+                <a href="#contact">Contact</a>
             </nav>
             <div class="theme-toggle-container">
                 <button id="theme-toggle" aria-label="Toggle dark/light theme" class="theme-btn">
@@ -525,62 +525,108 @@
             
             <div class="section-content">
                 <p class="games-desc">
-                    Take a quick break and play a round of retro Snake! Use your keyboard arrow keys or WASD on desktop, or the touch controls on mobile.
+                    Take a quick break and play a round of retro Snake or challenge the CPU in Tic-Tac-Toe! Use keyboard/touch for Snake, or click/tap directly on the grid for Tic-Tac-Toe.
                 </p>
 
-                <div class="game-console">
-                    <div class="console-header">
-                        <div class="score-display">
-                            <span class="score-label">Score</span>
-                            <span id="game-score" class="score-value">000</span>
-                        </div>
-                        <div class="score-display">
-                            <span class="score-label">Hi-Score</span>
-                            <span id="game-highscore" class="score-value">000</span>
-                        </div>
-                    </div>
-
-                    <div class="canvas-container">
-                        <canvas id="snake-canvas" width="400" height="400"></canvas>
-                        <div id="game-overlay" class="game-overlay">
-                            <div class="overlay-content">
-                                <h3 id="overlay-title">SNAKE ARCADE</h3>
-                                <p id="overlay-subtitle">Press Play or Arrow Key to Start</p>
-                                <button id="game-play-btn" class="btn btn-outline">PLAY</button>
+                <div class="games-grid">
+                    <!-- Snake Game Console -->
+                    <div class="game-console">
+                        <div class="console-header">
+                            <div class="score-display">
+                                <span class="score-label">Score</span>
+                                <span id="game-score" class="score-value">000</span>
+                            </div>
+                            <div class="score-display">
+                                <span class="score-label">Hi-Score</span>
+                                <span id="game-highscore" class="score-value">000</span>
                             </div>
                         </div>
+
+                        <div class="canvas-container">
+                            <canvas id="snake-canvas" width="400" height="400"></canvas>
+                            <div id="game-overlay" class="game-overlay">
+                                <div class="overlay-content">
+                                    <h3 id="overlay-title">SNAKE ARCADE</h3>
+                                    <p id="overlay-subtitle">Press Play or Arrow Key to Start</p>
+                                    <button id="game-play-btn" class="btn btn-outline">PLAY</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="console-controls">
+                            <div class="control-group">
+                                <label for="game-difficulty" class="control-label">Speed</label>
+                                <select id="game-difficulty" class="control-select">
+                                    <option value="slow">Slow</option>
+                                    <option value="normal" selected>Normal</option>
+                                    <option value="fast">Fast</option>
+                                </select>
+                            </div>
+
+                            <div class="control-group">
+                                <button id="sound-toggle" class="btn btn-outline btn-sound" aria-label="Toggle Sound">
+                                    <span class="sound-icon">Sound: On</span>
+                                </button>
+                            </div>
+                            
+                            <div class="control-group">
+                                <button id="game-reset-btn" class="btn btn-outline">Reset</button>
+                            </div>
+                        </div>
+
+                        <!-- Virtual D-Pad for Mobile Touch Devices -->
+                        <div id="virtual-dpad" class="virtual-dpad">
+                            <button id="dpad-up" class="dpad-btn" aria-label="Up">▲</button>
+                            <div class="dpad-middle-row">
+                                <button id="dpad-left" class="dpad-btn" aria-label="Left">◀</button>
+                                <div class="dpad-center"></div>
+                                <button id="dpad-right" class="dpad-btn" aria-label="Right">▶</button>
+                            </div>
+                            <button id="dpad-down" class="dpad-btn" aria-label="Down">▼</button>
+                        </div>
                     </div>
 
-                    <div class="console-controls">
-                        <div class="control-group">
-                            <label for="game-difficulty" class="control-label">Speed</label>
-                            <select id="game-difficulty" class="control-select">
-                                <option value="slow">Slow</option>
-                                <option value="normal" selected>Normal</option>
-                                <option value="fast">Fast</option>
-                            </select>
+                    <!-- Tic-Tac-Toe Game Console -->
+                    <div class="game-console">
+                        <div class="console-header">
+                            <div class="score-display">
+                                <span class="score-label">X Score (You)</span>
+                                <span id="ttt-score-x" class="score-value">000</span>
+                            </div>
+                            <div class="score-display">
+                                <span class="score-label">Ties</span>
+                                <span id="ttt-score-ties" class="score-value">000</span>
+                            </div>
+                            <div class="score-display">
+                                <span class="score-label">O Score</span>
+                                <span id="ttt-score-o" class="score-value">000</span>
+                            </div>
                         </div>
 
-                        <div class="control-group">
-                            <button id="sound-toggle" class="btn btn-outline btn-sound" aria-label="Toggle Sound">
-                                <span class="sound-icon">Sound: On</span>
-                            </button>
+                        <div class="canvas-container">
+                            <canvas id="ttt-canvas" width="400" height="400"></canvas>
+                            <div id="ttt-overlay" class="game-overlay">
+                                <div class="overlay-content">
+                                    <h3 id="ttt-overlay-title">NEON XO</h3>
+                                    <p id="ttt-overlay-subtitle">Select mode and click Play</p>
+                                    <button id="ttt-play-btn" class="btn btn-outline">PLAY</button>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <div class="control-group">
-                            <button id="game-reset-btn" class="btn btn-outline">Reset</button>
-                        </div>
-                    </div>
 
-                    <!-- Virtual D-Pad for Mobile Touch Devices -->
-                    <div id="virtual-dpad" class="virtual-dpad">
-                        <button id="dpad-up" class="dpad-btn" aria-label="Up">▲</button>
-                        <div class="dpad-middle-row">
-                            <button id="dpad-left" class="dpad-btn" aria-label="Left">◀</button>
-                            <div class="dpad-center"></div>
-                            <button id="dpad-right" class="dpad-btn" aria-label="Right">▶</button>
+                        <div class="console-controls">
+                            <div class="control-group">
+                                <label for="ttt-mode" class="control-label">Mode</label>
+                                <select id="ttt-mode" class="control-select">
+                                    <option value="ai" selected>Vs CPU</option>
+                                    <option value="pvp">Local 2P</option>
+                                </select>
+                            </div>
+                            
+                            <div class="control-group">
+                                <button id="ttt-reset-btn" class="btn btn-outline">Reset</button>
+                            </div>
                         </div>
-                        <button id="dpad-down" class="dpad-btn" aria-label="Down">▼</button>
                     </div>
                 </div>
             </div>
