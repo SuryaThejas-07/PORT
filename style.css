@@ -524,7 +524,7 @@ body {
 /* // 01 — projects Section */
 .projects-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
   gap: 30px;
 }
 
@@ -1488,5 +1488,51 @@ body {
 
   .game-console {
     padding: 15px;
+  }
+}
+
+/* Extremely small mobile devices */
+@media (max-width: 360px) {
+  :root {
+    --content-padding: 16px;
+  }
+
+  .nav-container {
+    padding: 12px 16px;
+  }
+
+  .nav-links {
+    gap: 8px;
+  }
+
+  .nav-links a {
+    font-size: 0.72rem;
+  }
+
+  .hero-name {
+    font-size: 2.1rem;
+  }
+
+  .form-group {
+    min-width: 100%;
+  }
+
+  .game-console {
+    padding: 12px;
+  }
+}
+
+/* Extremely large screens and TVs */
+@media (min-width: 2000px) {
+  :root {
+    --content-max-width: 2200px;
+  }
+
+  body {
+    font-size: 18px;
+  }
+
+  .hero-name {
+    font-size: 5.5rem;
   }
 }
