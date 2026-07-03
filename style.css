@@ -1102,6 +1102,7 @@ body {
   font-size: 0.95rem;
   color: var(--text-muted);
   margin-bottom: 30px;
+  max-width: 560px;
 }
 
 .game-console {
