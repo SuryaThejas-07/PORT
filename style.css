@@ -180,25 +180,31 @@ body {
 }
 
 .theme-label-item {
-  transition: color 200ms ease, opacity 200ms ease;
+  transition: color 200ms ease, opacity 200ms ease, transform 200ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-icon {
+  display: block;
 }
 
 .theme-active {
-  color: var(--text) !important;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  font-weight: 500;
+  color: var(--accent) !important;
   opacity: 1 !important;
+  transform: scale(1.15);
 }
 
 .theme-label-item:not(.theme-active) {
-  opacity: 0.55;
+  opacity: 0.45;
   color: var(--text-muted);
 }
 
 .theme-label-item:not(.theme-active):hover {
-  opacity: 1;
+  opacity: 0.85;
   color: var(--text);
+  transform: scale(1.15);
 }
 
 .theme-label-divider {
