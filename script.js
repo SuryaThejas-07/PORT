@@ -500,14 +500,18 @@ function initSnakeGame() {
 
     // Drawing functions
     function draw() {
+        const colors = getThemeColors();
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        const canvasBg = isLight ? '#FAF9F6' : '#0b0b0b';
+        const gridStroke = isLight ? '#E5E3DB' : '#151515';
+        const eyeColor = isLight ? '#FAF9F6' : '#0b0b0b';
+
         // Clear canvas
-        ctx.fillStyle = '#0b0b0b'; // Dark background
+        ctx.fillStyle = canvasBg;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        const colors = getThemeColors();
-
         // Draw grid lines
-        ctx.strokeStyle = '#151515';
+        ctx.strokeStyle = gridStroke;
         ctx.lineWidth = 1;
         for (let i = 0; i <= gridSize; i++) {
             ctx.beginPath();
@@ -523,8 +527,10 @@ function initSnakeGame() {
 
         // Draw Food
         ctx.fillStyle = colors.accent;
-        ctx.shadowColor = colors.accent;
-        ctx.shadowBlur = 8;
+        if (!isLight) {
+            ctx.shadowColor = colors.accent;
+            ctx.shadowBlur = 8;
+        }
         ctx.beginPath();
         const centerX = food.x * cellSize + cellSize / 2;
         const centerY = food.y * cellSize + cellSize / 2;
@@ -543,12 +549,14 @@ function initSnakeGame() {
             const size = cellSize - padding * 2;
 
             if (isHead) {
-                ctx.shadowColor = colors.accent;
-                ctx.shadowBlur = 4;
+                if (!isLight) {
+                    ctx.shadowColor = colors.accent;
+                    ctx.shadowBlur = 4;
+                }
                 ctx.fillRect(x, y, size, size);
                 ctx.shadowBlur = 0;
 
-                ctx.fillStyle = '#0b0b0b';
+                ctx.fillStyle = eyeColor;
                 const eyeSize = 2;
                 if (direction === 'up' || direction === 'down') {
                     ctx.fillRect(x + 4, y + size/2 - 1, eyeSize, eyeSize);
@@ -699,16 +707,19 @@ function initTicTacToeGame() {
     // Draw the board
     function drawBoard() {
         const colors = getThemeColors();
-        
+        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+        const canvasBg = isLight ? '#FAF9F6' : '#0b0b0b';
+        const gridStroke = isLight ? colors.border : '#2A2A28';
+
         // Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
         // Background
-        ctx.fillStyle = '#0b0b0b';
+        ctx.fillStyle = canvasBg;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // Draw grid lines
-        ctx.strokeStyle = colors.border;
+        ctx.strokeStyle = gridStroke;
         ctx.lineWidth = 6;
         ctx.lineCap = 'round';
 
@@ -737,21 +748,27 @@ function initTicTacToeGame() {
             const y = row * cellSize + cellSize / 2;
 
             if (board[i] === 'X') {
-                drawX(x, y, cellSize / 3.5, colors.accent);
+                drawX(x, y, cellSize / 3.5, colors.accent, isLight);
             } else if (board[i] === 'O') {
-                drawO(x, y, cellSize / 3.5, colors.text);
+                drawO(x, y, cellSize / 3.5, colors.text, isLight);
             }
         }
     }
 
-    function drawX(x, y, size, color) {
+    function drawX(x, y, size, color, isLight) {
         ctx.strokeStyle = color;
         ctx.lineWidth = 8;
         ctx.lineCap = 'round';
         
-        // Neon glow
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = color;
+        if (!isLight) {
+            // Neon glow
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = color;
+        } else {
+            // Soft shadow for depth in light mode
+            ctx.shadowBlur = 4;
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
+        }
 
         ctx.beginPath();
         ctx.moveTo(x - size, y - size);
@@ -763,14 +780,20 @@ function initTicTacToeGame() {
         ctx.shadowBlur = 0;
     }
 
-    function drawO(x, y, size, color) {
+    function drawO(x, y, size, color, isLight) {
         ctx.strokeStyle = color;
         ctx.lineWidth = 8;
         ctx.lineCap = 'round';
 
-        // Neon glow
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = color;
+        if (!isLight) {
+            // Neon glow
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = color;
+        } else {
+            // Soft shadow for depth in light mode
+            ctx.shadowBlur = 4;
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
+        }
 
         ctx.beginPath();
         ctx.arc(x, y, size, 0, Math.PI * 2);

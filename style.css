@@ -13,6 +13,9 @@
   --accent-soft: rgba(91, 141, 239, 0.12);
   --border: #2A2A28;
   --surface: #181818;
+  --overlay-bg: rgba(18, 18, 18, 0.92);
+  --overlay-text: #EDEAE3;
+  --overlay-text-muted: #9A968C;
 
   /* Typography */
   --font-serif: 'Fraunces', serif;
@@ -34,6 +37,9 @@
   --accent-soft: rgba(43, 92, 184, 0.08);
   --border: #E5E3DB;
   --surface: #F0EEE6;
+  --overlay-bg: rgba(250, 249, 246, 0.92);
+  --overlay-text: #1C1C1A;
+  --overlay-text-muted: #6B6960;
 }
 
 /* Reset & Base Rules */
@@ -1192,7 +1198,7 @@ body {
   width: 100%;
   aspect-ratio: 1 / 1;
   border: 1px solid var(--border);
-  background-color: #0b0b0b;
+  background-color: var(--overlay-bg);
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -1211,7 +1217,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(18, 18, 18, 0.92);
+  background-color: var(--overlay-bg);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1235,19 +1241,19 @@ body {
   gap: 16px;
 }
 
-#overlay-title {
+#overlay-title, #ttt-overlay-title {
   font-family: var(--font-serif);
   font-size: 2.2rem;
   font-weight: 600;
-  color: #EDEAE3; /* Maintain light font on dark overlay overlay */
+  color: var(--overlay-text);
   letter-spacing: 0.05em;
   margin: 0;
 }
 
-#overlay-subtitle {
+#overlay-subtitle, #ttt-overlay-subtitle {
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: #9A968C;
+  color: var(--overlay-text-muted);
   margin-bottom: 8px;
 }
 
