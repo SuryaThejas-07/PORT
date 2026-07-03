@@ -1146,8 +1146,8 @@ body {
 }
 
 .game-console {
-  background-color: var(--surface);
-  border: 1px solid var(--border);
+  background-color: #181818;
+  border: 1px solid #2A2A28;
   padding: 30px;
   width: 100%;
   max-width: 480px;
@@ -1157,16 +1157,17 @@ body {
   gap: 20px;
   position: relative;
   transition: border-color 300ms ease;
+  color: #EDEAE3;
 }
 
 .game-console:hover {
-  border-color: var(--accent);
+  border-color: #5B8DEF;
 }
 
 .console-header {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid #2A2A28;
   padding-bottom: 15px;
 }
 
@@ -1180,7 +1181,7 @@ body {
 .score-label {
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  color: var(--text-muted);
+  color: #9A968C;
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
@@ -1189,7 +1190,7 @@ body {
   font-family: var(--font-mono);
   font-size: 1.6rem;
   font-weight: 600;
-  color: var(--accent);
+  color: #5B8DEF;
   line-height: 1;
 }
 
@@ -1197,8 +1198,8 @@ body {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  border: 1px solid var(--border);
-  background-color: var(--overlay-bg);
+  border: 1px solid #2A2A28;
+  background-color: #0b0b0b;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -1217,7 +1218,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: var(--overlay-bg);
+  background-color: rgba(18, 18, 18, 0.92);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1245,7 +1246,7 @@ body {
   font-family: var(--font-serif);
   font-size: 2.2rem;
   font-weight: 600;
-  color: var(--overlay-text);
+  color: #EDEAE3;
   letter-spacing: 0.05em;
   margin: 0;
 }
@@ -1253,7 +1254,7 @@ body {
 #overlay-subtitle, #ttt-overlay-subtitle {
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: var(--overlay-text-muted);
+  color: #9A968C;
   margin-bottom: 8px;
 }
 
@@ -1262,7 +1263,7 @@ body {
   justify-content: space-between;
   align-items: center;
   padding-top: 10px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid #2A2A28;
   gap: 12px;
 }
 
@@ -1275,7 +1276,7 @@ body {
 .control-label {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: #9A968C;
   text-transform: uppercase;
 }
 
@@ -1283,22 +1284,35 @@ body {
   font-family: var(--font-mono);
   font-size: 0.8rem;
   padding: 6px 12px;
-  background-color: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--text);
+  background-color: #121212;
+  border: 1px solid #2A2A28;
+  color: #EDEAE3;
   outline: none;
   cursor: pointer;
   transition: border-color 200ms ease;
 }
 
 .control-select:focus {
-  border-color: var(--accent);
+  border-color: #5B8DEF;
 }
 
 .btn-sound {
   font-family: var(--font-mono);
   font-size: 0.8rem;
   padding: 6px 12px;
+}
+
+.game-console .btn {
+  background-color: #121212 !important;
+  border-color: #2A2A28 !important;
+  color: #5B8DEF !important;
+}
+
+.game-console .btn:hover,
+.game-console .btn:focus-visible {
+  border-color: #5B8DEF !important;
+  color: #EDEAE3 !important;
+  background-color: rgba(91, 141, 239, 0.12) !important;
 }
 
 /* Virtual D-Pad for Mobile Touch Devices */
@@ -1308,16 +1322,16 @@ body {
   align-items: center;
   gap: 6px;
   margin-top: 15px;
-  border-top: 1px dashed var(--border);
+  border-top: 1px dashed #2A2A28;
   padding-top: 20px;
 }
 
 .dpad-btn {
   width: 52px;
   height: 52px;
-  background-color: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--text);
+  background-color: #121212;
+  border: 1px solid #2A2A28;
+  color: #EDEAE3;
   font-size: 1.1rem;
   display: flex;
   justify-content: center;
@@ -1330,9 +1344,9 @@ body {
 }
 
 .dpad-btn:active {
-  background-color: var(--accent);
-  color: var(--bg);
-  border-color: var(--accent);
+  background-color: #5B8DEF;
+  color: #121212;
+  border-color: #5B8DEF;
 }
 
 .dpad-middle-row {
@@ -1347,8 +1361,8 @@ body {
   position: absolute;
   left: 52px;
   top: 0;
-  border: 1px solid var(--border);
-  background-color: var(--surface);
+  border: 1px solid #2A2A28;
+  background-color: #181818;
   pointer-events: none;
   border-radius: 4px;
 }

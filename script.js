@@ -26,16 +26,11 @@ function initTheme() {
     
     if (!themeToggle || !lightLabel || !darkLabel) return;
 
-    // Retrieve saved theme preference or query system preference
+    // Retrieve saved theme preference, defaulting to dark
     const savedTheme = localStorage.getItem('theme');
-    const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-    
-    // Default to dark unless light is preferred
     let currentTheme = 'dark';
     if (savedTheme) {
         currentTheme = savedTheme;
-    } else if (systemPrefersLight) {
-        currentTheme = 'light';
     }
 
     setTheme(currentTheme);
@@ -500,18 +495,12 @@ function initSnakeGame() {
 
     // Drawing functions
     function draw() {
-        const colors = getThemeColors();
-        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-        const canvasBg = isLight ? '#FAF9F6' : '#0b0b0b';
-        const gridStroke = isLight ? '#E5E3DB' : '#151515';
-        const eyeColor = isLight ? '#FAF9F6' : '#0b0b0b';
-
         // Clear canvas
-        ctx.fillStyle = canvasBg;
+        ctx.fillStyle = '#0b0b0b'; // Dark background
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // Draw grid lines
-        ctx.strokeStyle = gridStroke;
+        ctx.strokeStyle = '#151515';
         ctx.lineWidth = 1;
         for (let i = 0; i <= gridSize; i++) {
             ctx.beginPath();
@@ -526,11 +515,9 @@ function initSnakeGame() {
         }
 
         // Draw Food
-        ctx.fillStyle = colors.accent;
-        if (!isLight) {
-            ctx.shadowColor = colors.accent;
-            ctx.shadowBlur = 8;
-        }
+        ctx.fillStyle = '#5B8DEF'; // Neon blue accent
+        ctx.shadowColor = '#5B8DEF';
+        ctx.shadowBlur = 8;
         ctx.beginPath();
         const centerX = food.x * cellSize + cellSize / 2;
         const centerY = food.y * cellSize + cellSize / 2;
@@ -541,7 +528,7 @@ function initSnakeGame() {
         // Draw Snake
         snake.forEach((segment, index) => {
             const isHead = index === 0;
-            ctx.fillStyle = isHead ? colors.accent : colors.text;
+            ctx.fillStyle = isHead ? '#5B8DEF' : '#EDEAE3';
             
             const padding = 1.5;
             const x = segment.x * cellSize + padding;
@@ -549,14 +536,12 @@ function initSnakeGame() {
             const size = cellSize - padding * 2;
 
             if (isHead) {
-                if (!isLight) {
-                    ctx.shadowColor = colors.accent;
-                    ctx.shadowBlur = 4;
-                }
+                ctx.shadowColor = '#5B8DEF';
+                ctx.shadowBlur = 4;
                 ctx.fillRect(x, y, size, size);
                 ctx.shadowBlur = 0;
 
-                ctx.fillStyle = eyeColor;
+                ctx.fillStyle = '#0b0b0b';
                 const eyeSize = 2;
                 if (direction === 'up' || direction === 'down') {
                     ctx.fillRect(x + 4, y + size/2 - 1, eyeSize, eyeSize);
@@ -706,20 +691,15 @@ function initTicTacToeGame() {
 
     // Draw the board
     function drawBoard() {
-        const colors = getThemeColors();
-        const isLight = document.documentElement.getAttribute('data-theme') === 'light';
-        const canvasBg = isLight ? '#FAF9F6' : '#0b0b0b';
-        const gridStroke = isLight ? colors.border : '#2A2A28';
-
         // Clear canvas
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
         // Background
-        ctx.fillStyle = canvasBg;
+        ctx.fillStyle = '#0b0b0b';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // Draw grid lines
-        ctx.strokeStyle = gridStroke;
+        ctx.strokeStyle = '#2A2A28';
         ctx.lineWidth = 6;
         ctx.lineCap = 'round';
 
@@ -748,27 +728,21 @@ function initTicTacToeGame() {
             const y = row * cellSize + cellSize / 2;
 
             if (board[i] === 'X') {
-                drawX(x, y, cellSize / 3.5, colors.accent, isLight);
+                drawX(x, y, cellSize / 3.5, '#5B8DEF');
             } else if (board[i] === 'O') {
-                drawO(x, y, cellSize / 3.5, colors.text, isLight);
+                drawO(x, y, cellSize / 3.5, '#EDEAE3');
             }
         }
     }
 
-    function drawX(x, y, size, color, isLight) {
+    function drawX(x, y, size, color) {
         ctx.strokeStyle = color;
         ctx.lineWidth = 8;
         ctx.lineCap = 'round';
         
-        if (!isLight) {
-            // Neon glow
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = color;
-        } else {
-            // Soft shadow for depth in light mode
-            ctx.shadowBlur = 4;
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
-        }
+        // Neon glow
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = color;
 
         ctx.beginPath();
         ctx.moveTo(x - size, y - size);
@@ -780,20 +754,14 @@ function initTicTacToeGame() {
         ctx.shadowBlur = 0;
     }
 
-    function drawO(x, y, size, color, isLight) {
+    function drawO(x, y, size, color) {
         ctx.strokeStyle = color;
         ctx.lineWidth = 8;
         ctx.lineCap = 'round';
 
-        if (!isLight) {
-            // Neon glow
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = color;
-        } else {
-            // Soft shadow for depth in light mode
-            ctx.shadowBlur = 4;
-            ctx.shadowColor = 'rgba(0, 0, 0, 0.15)';
-        }
+        // Neon glow
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = color;
 
         ctx.beginPath();
         ctx.arc(x, y, size, 0, Math.PI * 2);
